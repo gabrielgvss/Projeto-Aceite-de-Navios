@@ -1,0 +1,9 @@
+html{
+    background-color: aqua;
+}
+body{
+    justify-content: center;
+    align-items: center;
+    background-color: gray;
+    border-radius: 15px;
+}

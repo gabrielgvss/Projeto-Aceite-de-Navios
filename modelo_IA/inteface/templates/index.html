@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Previsões de Embarcações</title>
+    <style>
+        html {
+            background-color: aqua;
+            height: 100%;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: gray;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        h1, form, h2 {
+            margin: 10px 0;
+        }
+
+        form {
+            display: inline-block;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Carregar Arquivo CSV</h1>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".csv" required>
+        <button type="submit">Enviar</button>
+    </form>
+
+    {% if result %}
+    <h2>Resultado das Previsões</h2>
+    {% if aviso %}
+        <p>{{ aviso }}</p>
+    {% endif %}
+    {{ result | safe }}
+    {% endif %}
+</body>
+</html>
