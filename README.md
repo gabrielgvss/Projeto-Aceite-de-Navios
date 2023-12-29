@@ -7,9 +7,10 @@ O referido projeto faz jus a solução da problemática de Aceite de Navios no P
 Como resolução, está em desenvolvimento o sistema SANA, que visa fazer a automação do processo de aceite de navios no Porto do Itaqui, utilizando algoritmos de Inteligência Artificial.
 
 ## Tecnologias utilizadas:
-- Linguagem Python
-- Jupyter Notebook
-- Flask
+- Linguagem Python:
+1. Bibliotecas voltadas para Análise de Dados e Machine Learning (Pandas, NumPy, Scikit-Learning, LIME)
+2. Jupyter Notebook
+3. Flask
 
 
 
