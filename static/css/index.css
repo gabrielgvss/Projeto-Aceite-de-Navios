@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap');
+
+:root{
+  --color-white: #fff;
+  --color-blue1: #1648a8;
+  --color-gray: #f2f2f2;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  font-family: 'Poppins',sans-serif;
+  background-color: var(--color-gray);
+  color: var(--color-white);
+}
+
+img{
+  width: 430px;
+}
+
+.header{
+  background-color: var(--color-white);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 150px;
+  margin-left: 0px;
+  margin-bottom: 2px;
+}
+
+container-fluid {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  width: 400px;
+  background-color: var(--color-blue1);
+  color: var(--color-white);
+  padding-top: 50px;
+  position: absolute;
+  height: 100%;
+  margin-left: 0px;
+  margin-right: 0px;
+  flex-direction: row;
+}
+
+.sidebar a{
+  text-decoration: none;
+  color: white;
+  display: block;
+  padding: 15px;
+  list-style-type: none;
+}
+
+.main-content {
+  flex: 2;
+  padding: 90px;
+}
+
+.button-group {
+  text-align: center;
+}
+
+.button-group button {
+  margin: 25px;
+  padding: 30px;
+  font-size: 20px;
+  list-style-type: none;
+}
+
+/* Adicionado estilo para centralizar os botões em grupos de dois */
+.button-group .button-group-row {
+  display: flex;
+  justify-content:space-between;
+}
+
+.button-group button:nth-child(even) {
+  margin-left: 20px;
+  margin-right: 0px;
+}
