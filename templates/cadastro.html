@@ -43,57 +43,53 @@
                 </div>
 
                 <div class="input-group">
-                    <div class="input-box">
-                        <label for="nome">Nome do Navio:</label>
-                        <input type="text" id="nome" name="nome" required>
+                    <div class="input-box"> <form action="/cadastro" method="POST">
 
-                        <label for="loa">LOA (Comprimento total):</label>
-                        <input type="text" id="loa" name="loa" required>
-
-                        <label for="boca">Boca (Largura):</label>
-                        <input type="text" id="boca" name="boca" required>
-
-                        <label for="dwt">DWT (Capacidade Máxima de Carga):</label>
-                        <input type="text" id="dwt" name="dwt" required>
-
-                        <label for="calado_entrada">Calado de Entrada (Profundidade frontal):</label>
-                        <input type="text" id="calado_entrada" name="calado_entrada" required>
-
-                        <label for="calado_saida">Calado de Saída (Profundidade traseira):</label>
-                        <input type="text" id="calado_saida" name="calado_saida" required>
-
-                        <label for="calado_aereo">Calado Aéreo (Altura vertical máxima):</label>
-                        <input type="text" id="calado_aereo" name="calado_aereo" required>
-
-                        <label for="pontal">Pontal (Distância vertical máxima):</label>
-                        <input type="text" id="pontal" name="pontal" required>
-
-                        <label for="tamanho_lanca">Tamanho de Lança:</label>
-                        <input type="text" id="tamanho_lanca" name="tamanho_lanca" required>
-
-                        <label for="ano_construcao">Ano de Construção:</label>
-                        <input type="text" id="ano_construcao" name="ano_construcao" required>
-
-                        <label for="ultimo_porto">Último Porto:</label>
-                        <input type="text" id="ultimo_porto" name="ultimo_porto" required>
-
-                        <label for="proximo_porto">Próximo Porto:</label>
-                        <input type="text" id="proximo_porto" name="proximo_porto" required>
-
-                        <label for="tipo_navio">Tipo de Navio Padrão:</label>
-                        <select id="tipo_navio" name="tipo_navio" required>
-                            <option value="GS">GS</option>
-                            <option value="CG">CG</option>
-                            <option value="GSM">GSM</option>
-                            <option value="GLP">GLP</option>
-                            <option value="CNTR">CNTR</option>
-                            <option value="GL">GL</option>
-                            <option value="GLP">GLP</option>
-                        </select>
-                    </div>
-                </div>
-
-                
+                        {{ form.hidden_tag() }}
+                        {{ form.csrf_token }}
+                        <div>
+                            {{ form.nome.label }} {{ form.nome(size=20) }}
+                        </div>
+                        <div>
+                            {{ form.loa.label }} {{ form.loa }}
+                        </div>
+                        <div>
+                            {{ form.boca.label }} {{ form.boca }}
+                        </div>
+                        <div>
+                            {{ form.dwt.label }} {{ form.dwt }}
+                        </div>
+                        <div>
+                            {{ form.calado_entrada.label }} {{ form.calado_entrada }}
+                        </div>
+                        <div>
+                            {{ form.calado_saida.label }} {{ form.calado_saida }}
+                        </div>
+                        <div>
+                            {{ form.calado_aereo.label }} {{ form.calado_aereo }}
+                        </div>
+                        <div>
+                            {{ form.pontal.label }} {{ form.pontal }}
+                        </div>
+                        <div>
+                            {{ form.tamanho_lanca.label }} {{ form.tamanho_lanca }}
+                        </div>
+                        <div>
+                            {{ form.ano_construcao.label }} {{ form.ano_construcao }}
+                        </div>
+                        <div>
+                            {{ form.ultimo_porto.label }} {{ form.ultimo_porto }}
+                        </div>
+                        <div>
+                            {{ form.proximo_porto.label }} {{ form.proximo_porto }}
+                        </div>
+                        <div>
+                            {{ form.tipo_navio.label }} {{ form.tipo_navio }}
+                        </div>
+                        <div>
+                            {{ form.submit }}
+                        </div>
+                    </form>                
             </main>
         </div>
     </div>
