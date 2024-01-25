@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+import pandas as pd
+from flask import Flask, render_template, request
 from app.form import CadastroForm
 from flask_wtf.csrf import CSRFProtect
 import joblib
@@ -12,59 +13,88 @@ csrf = CSRFProtect(app)
 
 modelo_treinado = joblib.load('modelo_a.joblib')
 
+def realizar_predicao(dados):
+    dados_predicao = np.array([
+        dados['LOA (metros)'],
+        dados['Boca (metros)'],
+        dados['DWT'],
+        dados['Calado de Entrada (metros)'],
+        dados['Calado de Saída (metros)'],
+        dados['Ano de Construção']
+    ]).reshape(1, -1)
+
+    resultado_predicao = modelo_treinado.predict(dados_predicao)
+    return resultado_predicao[0]
+
+def preencher_formulario_com_dados(form, dados):
+    for campo, valor in dados.items():
+        if campo in form._fields:
+            form._fields[campo].data = valor
+
 @app.route("/")
 def homepage():
     return render_template("index.html")
-
 
 @app.route("/cadastro", methods=['GET', 'POST'])
 def cadastro():
     form = CadastroForm()
 
-    if form.validate_on_submit():
-        dados_formulario = {
-            'nome': form.nome.data,
-            'loa': form.loa.data,
-            'boca': form.boca.data,
-            'dwt': form.dwt.data,
-            'calado_entrada': form.calado_entrada.data,
-            'calado_saida': form.calado_saida.data,
-            'calado_aereo': form.calado_aereo.data,
-            'pontal': form.pontal.data,
-            'tamanho_lanca': form.tamanho_lanca.data,
-            'ano_construcao': form.ano_construcao.data,
-            'tipo_navio': form.tipo_navio.data,
-            'ultimo_porto': form.ultimo_porto.data,
-            'proximo_porto': form.proximo_porto.data,
-            'arquivo_csv': form.arquivo_csv.data,
-           
-        }
-        # Realize a predição com o modelo treinado
-        dados_predicao = [
-            dados_formulario['loa'],
-            dados_formulario['boca'],
-            dados_formulario['dwt'],
-            dados_formulario['calado_entrada'],
-            dados_formulario['calado_saida'],
-            dados_formulario['ano_construcao']
-        ]
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            dados_formulario = {
+                'Nome do Navio': form.nome.data,
+                'LOA (metros)': form.loa.data,
+                'Boca (metros)': form.boca.data,
+                'DWT': form.dwt.data,
+                'Calado de Entrada (metros)': form.calado_entrada.data,
+                'Calado de Saída (metros)': form.calado_saida.data,
+                'Calado Aéreo (metros)': form.calado_aereo.data,
+                'Pontal (metros)': form.pontal.data,
+                'Tamanho da Lança (metros)': form.tamanho_lanca.data,
+                'Ano de Construção': form.ano_construcao.data,
+                'Tipo de Navio': form.tipo_navio.data
+            }
 
-        # Adapte os dados de entrada conforme necessário para o modelo
-        dados_predicao = np.array(dados_predicao).reshape(1, -1)
+            # Adicione campos extras do formulário, mesmo que não sejam usados na predição
+            dados_formulario['Último Porto'] = form.ultimo_porto.data
+            dados_formulario['Próximo Porto'] = form.proximo_porto.data
 
-        # Realize a predição
-        resultado_predicao = modelo_treinado.predict(dados_predicao)
+            # Verifique se o arquivo foi fornecido
+            if form.arquivo_csv.data:
+                try:
+                    arquivo_upload = form.arquivo_csv.data
+                    df = pd.read_csv(arquivo_upload, skiprows=1)
 
-        # Avalie o resultado e redirecione conforme necessário
-        if resultado_predicao == 1:
-            # Se a predição for 1 (recusado), redirecione para a página de recusa
-            return render_template("recusado.html", dados=dados_formulario)
-        else:
-            # Se a predição for 0 (aceito), redirecione para a página de aceitação
-            return render_template("cadastro_sucesso.html", dados=dados_formulario)
+                    # Verifique se o DataFrame do CSV não está vazio
+                    if not df.empty:
+                        print("DataFrame do CSV:")
+                        print(df)
+
+                        # Preencha os campos do formulário com os dados do arquivo CSV
+                        form.nome.data = df['Nome'].iloc[0]
+                        form.loa.data = df['LOA (m)'].iloc[0]
+                        form.boca.data = df['Boca (m)'].iloc[0]
+                        form.dwt.data = df['DWT (ton)'].iloc[0]
+                        form.calado_entrada.data = df['Calado de Entrada (m)'].iloc[0]
+                        form.calado_saida.data = df['Calado de Saída (m)'].iloc[0]
+                        form.calado_aereo.data = df['Calado Aéreo (m)'].iloc[0]
+                        form.pontal.data = df['Pontal (m)'].iloc[0]
+                        form.tamanho_lanca.data = df['Tamanho de Lança (m)'].iloc[0]
+                        form.ano_construcao.data = df['Ano de Construção'].iloc[0]
+                        form.tipo_navio.data = df['Tipo do Navio'].iloc[0]
+                except Exception as e:
+                    print(f"Erro ao processar o arquivo CSV: {e}")
+                    # Trate o erro conforme necessário
+
+            # Continue com a lógica de validação e predição
+            resultado_predicao = realizar_predicao(dados_formulario)
+
+            if resultado_predicao == 1:
+                return render_template("recusado.html", dados=dados_formulario)
+            else:
+                return render_template("cadastro_sucesso.html", dados=dados_formulario)
 
     return render_template("cadastro.html", form=form)
-
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -75,7 +75,7 @@
                 <h1>Cadastro de Navio</h1>
               </div>
             </div>
-            <form action="/cadastro" method="POST" class="p-5">
+            <form action="/cadastro" method="POST" class="p-5" enctype="multipart/form-data">
               {{ form.hidden_tag() }} {{ form.csrf_token }}
 
               <div class="row mb-3">

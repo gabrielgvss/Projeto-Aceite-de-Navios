@@ -17,7 +17,6 @@ class CadastroForm(FlaskForm):
     ultimo_porto = StringField('Último Porto', render_kw={'class': 'form-control'})
     proximo_porto = StringField('Próximo Porto', render_kw={'class': 'form-control'})
     arquivo_csv = FileField('Upload do arquivo CSV', validators=[
-        FileRequired(),
         FileAllowed(['csv'], 'Apenas arquivos CSV são permitidos.')
         ], render_kw={'class': 'form-control'})
 
