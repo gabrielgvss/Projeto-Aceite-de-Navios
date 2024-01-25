@@ -1,62 +1,92 @@
 <!DOCTYPE html>
 <html lang="pt-br" data-bs-theme="light">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/index.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/index.css" />
+    <link rel="stylesheet" href="/static/css/sidebar.css" />
+    <link rel="stylesheet" href="/static/css/header.css" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <title>MENU PRINCIPAL</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="header" id="header">
-        <div class="logo">
-            <img src="/static/img/logo_sana.jpeg" alt="Logo SANA">
-        </div>
+      <div class="logo">
+        <img src="/static/img/logo_sana.png" alt="Logo SANA" id="img_logo" />
+      </div>
     </div>
 
     <div class="container-fluid">
-        <!-- Left Sidebar -->
-        <div id="toggle-btn">&#x2630;</div>
-        <nav class="sidebar" >
-            <div class="sidebar-header">
-                <h3>MENU</h3>
-            </div>
-            <ul class="list">
-                <li><a href="#"> Editar Senha de Acesso </a></li>
-                <li><a href="#"> Ajuda </a></li>
-                <li><a href="#"> Suporte </a></li>
-                <li><a href="#"> Sair </a></li>
-            </ul>
-        </nav>
-
-        <!-- Main Content -->
-        <div class="main-content">
-                <div class="button-group">
-                    <button class="btn btn-primary btn-lg"> <a href="/cadastro"> Cadastro de Navios </a> </button>
-                    <button class="btn btn-primary btn-lg"> Visualizar/Editar Dados </button>
-                </div>
-                <div class="button-group">
-                    <button class="btn btn-primary btn-lg"> Histórico de Aceites </button>
-                    <button class="btn btn-primary btn-lg"> Solicitar Aceites </button>
-                </div>
-                
-            </main>
+      <!-- Left Sidebar -->
+      <div class="menutoggle active">
+        <div id="toggle-btn">
+          <img
+            src="../static/img/menu.svg"
+            alt=""
+            class="bx bx-menu"
+            id="header-toggle"
+            style="cursor: pointer"
+          />
         </div>
+      </div>
+      <nav class="sidebar">
+        <div class="sidebar-header">
+          <h3 class="menu_header">MENU</h3>
+        </div>
+        <ul class="list">
+          <li>
+            <a href="#">
+              <img src="../static/img/key.svg" alt="" class="mx-3" /> Editar
+              Senha de Acesso
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img src="../static/img/ajuda.svg" alt="" class="mx-3" /> Ajuda
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img src="../static/img/suporte.png" alt="" class="mx-3" />
+              Suporte
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img src="../static/img/sair.svg" alt="" class="mx-3" /> Sair
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="button-group">
+          <a href="/cadastro">
+            <button class="btn btn-dark btn_home">Cadastro de Navios</button>
+          </a>
+          <a href="">
+            <button class="btn btn-dark btn_home">
+              Visualizar/Editar Dados
+            </button>
+          </a>
+        </div>
+        <div class="button-group">
+          <a href="">
+            <button class="btn btn-dark btn_home">Histórico de Aceites</button>
+          </a>
+          <a href="">
+            <button class="btn btn-dark btn_home">Solicitar Aceites</button>
+          </a>
+        </div>
+      </div>
     </div>
-
-    <script>
-        // Função para alternar a classe 'active' na barra lateral ao clicar no botão
-        document.getElementById('toggle-btn').addEventListener('click', function () {
-            document.querySelector('.sidebar').classList.toggle('active');
-        });
-    </script>
+    <script src="../static/js/site/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-   
-</body>
+  </body>
 </html>
-
-</html>
-

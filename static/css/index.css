@@ -15,50 +15,19 @@ body{
   font-family: 'Poppins',sans-serif;
   background-color: var(--color-gray);
   color: var(--color-white);
+  overflow: hidden;
 }
 
-img{
-  width: 430px;
-}
-
-.header{
-  background-color: var(--color-white);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 150px;
-  margin-left: 0px;
-  margin-bottom: 2px;
-}
 
 container-fluid {
   display: flex;
   flex: 1;
 }
 
-.sidebar {
-  width: 400px;
-  background-color: var(--color-blue1);
-  color: var(--color-white);
-  padding-top: 50px;
-  position: absolute;
-  height: 100%;
-  margin-left: 0px;
-  margin-right: 0px;
-  flex-direction: row;
-}
-
-.sidebar a{
-  text-decoration: none;
-  color: white;
-  display: block;
-  padding: 15px;
-  list-style-type: none;
-}
 
 .main-content {
   flex: 2;
-  padding: 90px;
+  padding: 50px;
 }
 
 .button-group {
@@ -68,8 +37,7 @@ container-fluid {
 .button-group button {
   margin: 25px;
   padding: 30px;
-  font-size: 20px;
-  list-style-type: none;
+  font-size: 15px;
 }
 
 /* Adicionado estilo para centralizar os botões em grupos de dois */
@@ -83,29 +51,15 @@ container-fluid {
   margin-right: 0px;
 }
 
-#toggle-btn {
-  position: fixed;
-  left: 10px;
-  top: 10px;
-  cursor: pointer;
-  background-color: var(--color-blue1);
-  top: 126px;
-  width: 25px
-}
-.sidebar {
-  width: 200px;
-  height: 100%;
-  background-color: var(--color-blue1);
-  position: fixed;
-  left: -200px;
-  transition: left 0.3s;
-}
-
-.sidebar.active {
-  left: 0;
-}
 
 a{
   color: #fff;
+  text-decoration: none;
 }
 
+.btn_home{
+ height: 150px;
+ width: 300px;
+ background-color: var(--color-blue1);
+ border-color: transparent;
+}

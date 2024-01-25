@@ -36,6 +36,7 @@ def cadastro():
             'tipo_navio': form.tipo_navio.data,
             'ultimo_porto': form.ultimo_porto.data,
             'proximo_porto': form.proximo_porto.data,
+            'arquivo_csv': form.arquivo_csv.data,
            
         }
         # Realize a predição com o modelo treinado
