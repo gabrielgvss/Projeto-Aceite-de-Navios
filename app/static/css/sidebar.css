@@ -32,6 +32,15 @@
     z-index: 1;
 }
 
+.sidebar a{
+    color: transparent;
+    transition-duration: 1.5s;
+}
+
+.sidebar.active a{
+    color: white;
+}
+
 li {
     list-style-type: none;
     color: black;

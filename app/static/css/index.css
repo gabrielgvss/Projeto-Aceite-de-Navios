@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap');
+
 
 :root{
   --color-white: #fff;
@@ -12,7 +12,6 @@
 }
 
 body{
-  font-family: 'Poppins',sans-serif;
   background-color: var(--color-gray);
   color: var(--color-white);
   overflow: hidden;
@@ -23,7 +22,6 @@ container-fluid {
   display: flex;
   flex: 1;
 }
-
 
 .main-content {
   flex: 2;
@@ -51,9 +49,7 @@ container-fluid {
   margin-right: 0px;
 }
 
-
 a{
-  color: #fff;
   text-decoration: none;
 }
 

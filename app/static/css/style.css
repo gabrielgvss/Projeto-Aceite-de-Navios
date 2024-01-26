@@ -1,0 +1,20 @@
+
+:root {
+  --color-white: #fff;
+  --color-blue1: #1648a8;
+  --color-gray: #f2f2f2;
+}
+
+body {
+  background-color: var(--color-gray);
+  overflow: hidden;
+}
+
+.menu_header {
+  color: var(--color-white);
+}
+
+.btn {
+  background-color: var(--color-blue1);
+  border-color: transparent;
+}
