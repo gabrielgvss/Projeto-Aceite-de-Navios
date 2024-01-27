@@ -100,5 +100,17 @@ def cadastro():
 def login():
     return render_template("login.html")
 
+@app.route("/relatorio")
+def relatorio_solicitacao():
+    dados_tabela = [
+       {"posicao": 1, "nome": "ANavio 1", "situacao" : "EM PROCESSAMENTO", "data" : "02/11/2022"},
+       {"posicao": 2, "nome": "CNavio 2","situacao" : "APROVADO", "data" : "30/09/2022"},
+       {"posicao": 3, "nome": "DNavio 3","situacao" : "REPROVADO", "data" : "17/09/2022"},
+       {"posicao": 4, "nome": "BNavio 4","situacao" : "REPROVADO", "data" : "21/10/2022"},
+       {"posicao": 5, "nome": "ENavio 3","situacao" : "APROVADO", "data" : "13/11/2022"}
+    ]
+    return render_template("relatorio_solicitacao.html", dados_tabela = dados_tabela)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
