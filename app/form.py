@@ -21,3 +21,24 @@ class CadastroForm(FlaskForm):
         ], render_kw={'class': 'form-control'})
 
     submit = SubmitField('Enviar', render_kw={'class': 'btn btn-dark w-25 btn-submit'})
+
+class PerfilForm(FlaskForm):
+    nome = StringField('Nome do Navio', render_kw={'class': 'form-control inp', 'disabled': 'disabled'})
+    loa = FloatField('LOA (metros)', render_kw={'class': 'form-control inp', 'disabled': 'disabled'})
+    boca = FloatField('Boca (metros)', render_kw={'class': 'form-control inp', 'disabled': 'disabled'})
+    dwt = IntegerField('DWT', render_kw={'class': 'form-control inp', 'disabled': 'disabled'})
+    calado_entrada = FloatField('Calado de Entrada (metros)', render_kw={'class': 'form-control inp', 'disabled': 'disabled'})
+    calado_saida = FloatField('Calado de Saída (metros)', render_kw={'class': 'form-control inp', 'disabled': 'disabled'})
+    calado_aereo = FloatField('Calado Aéreo (metros)', render_kw={'class': 'form-control inp', 'disabled': 'disabled'})
+    pontal = FloatField('Pontal (metros)', render_kw={'class': 'form-control inp', 'disabled': 'disabled'})
+    tamanho_lanca = FloatField('Tamanho da Lança (metros)', render_kw={'class': 'form-control inp', 'disabled': 'disabled'})
+    ano_construcao = IntegerField('Ano de Construção', render_kw={'class': 'form-control inp', 'disabled': 'disabled'})
+    tipo_navio = SelectField('Tipo de Navio', choices=["GS", "CG", "GSM", "GLP", "CNTR", "GL", "GLP"], render_kw={'class': 'form-control inp', 'disabled': 'disabled'})
+    ultimo_porto = StringField('Último Porto', render_kw={'class': 'form-control inp', 'disabled': 'disabled'})
+    proximo_porto = StringField('Próximo Porto', render_kw={'class': 'form-control inp', 'disabled': 'disabled'})
+    
+    situacao = StringField('Situação', render_kw={'class': 'form-control inp', 'disabled': 'disabled'})
+    motivacao = StringField('Motivação', render_kw={'class': 'form-control inp', 'disabled': 'disabled'})
+
+
+    submit = SubmitField('Enviar', render_kw={'class': 'btn btn-dark w-25 btn-submit'})

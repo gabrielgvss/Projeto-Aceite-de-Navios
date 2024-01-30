@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-bs-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/sidebar.css" />
+    <link rel="stylesheet" href="/static/css/header.css" />
+    <link rel="stylesheet" href="/static/css/style.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <title>CADASTRO DE NAVIO</title>
+  </head>
+
+  <body>
+    <div class="header" id="header">
+      <div class="logo">
+        <a href="/">
+          <img src="/static/img/logo_sana.png" alt="Logo SANA" id="img_logo" />
+        </a>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <!-- Left Sidebar -->
+      <div class="menutoggle active">
+        <div id="toggle-btn">
+          <img
+            src="../static/img/menu.svg"
+            alt=""
+            class="bx bx-menu"
+            id="header-toggle"
+            style="cursor: pointer"
+          />
+        </div>
+      </div>
+      <nav class="sidebar">
+        <div class="sidebar-header">
+          <h3 class="menu_header">MENU</h3>
+        </div>
+        <ul class="list">
+          <li>
+            <a href="#">
+              <img src="../static/img/key.svg" alt="" class="mx-3" /> Editar
+              Senha de Acesso
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img src="../static/img/ajuda.svg" alt="" class="mx-3" /> Ajuda
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img src="../static/img/suporte.png" alt="" class="mx-3" />
+              Suporte
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img src="../static/img/sair.svg" alt="" class="mx-3" /> Sair
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Main Content -->
+        <div class="container shadow-lg bg-light pt-3 rounded">
+          <div class="row justify-content-md-center">
+            <div class="form-header">
+              <div class="title px-5">
+                <h1>Cadastro de Navio</h1>
+              </div>
+            </div>
+            <form
+              action="/cadastro"
+              method="POST"
+              class="p-5"
+              enctype="multipart/form-data"
+            >
+              {{ form.hidden_tag() }} {{ form.csrf_token }}
+
+              <div class="row mb-3">
+                <div class="form-group col-6">
+                  {{ form.nome.label }} {{ form.nome(size=20) }}
+                </div>
+                <div class="form-group col-3">
+                  {{ form.loa.label }} {{ form.loa }}
+                </div>
+                <div class="form-group col-3">
+                  {{ form.boca.label }} {{ form.boca }}
+                </div>
+              </div>
+              <div class="row my-3">
+                <div class="form-group col-3">
+                  {{ form.dwt.label }} {{ form.dwt }}
+                </div>
+                <div class="form-group col-3">
+                  {{ form.calado_entrada.label }} {{ form.calado_entrada }}
+                </div>
+                <div class="form-group col-3">
+                  {{ form.calado_saida.label }} {{ form.calado_saida }}
+                </div>
+                <div class="form-group col-3">
+                  {{ form.calado_aereo.label }} {{ form.calado_aereo }}
+                </div>
+              </div>
+
+              <div class="row my-3">
+                <div class="form-group col-3">
+                  {{ form.pontal.label }} {{ form.pontal }}
+                </div>
+                <div class="form-group col-3">
+                  {{ form.tamanho_lanca.label }} {{ form.tamanho_lanca }}
+                </div>
+                <div class="form-group col-3">
+                  {{ form.ano_construcao.label }} {{ form.ano_construcao }}
+                </div>
+                <div class="form-group col-3">
+                  {{ form.tipo_navio.label }} {{ form.tipo_navio }}
+                </div>
+              </div>
+              <div class="row my-3">
+                <div class="col-6 ">
+                    {{ form.motivacao.label }} {{ form.motivacao }}
+                </div>
+                <div class="col-6">
+                    {{ form.situacao.label }} {{ form.situacao }}
+                </div>
+              </div>
+              <button
+                  type="button"
+                  class="btn btn-danger w-25 my-0"
+                  onclick="editarFormulario()"
+                  id="btn_editar"
+                >
+                  Editar
+                </button>
+
+                {{ form.submit(class='btn btn-success w-25 d-none', id="submit")
+                }}
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../static/js/site/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+  <script>
+    function editarFormulario() {
+      window.alert(
+        "altere algum campo para ter opção de reenviar dados do navio"
+      );
+      const inputs = [...document.getElementsByClassName("inp")];
+      let inputsvalue = [];
+
+      let i = 0;
+      inputs.forEach((e) => {
+        inputsvalue[i] = e.value;
+        i++;
+        e.removeAttribute("disabled");
+      });
+
+      inputs.forEach((e) => {
+        e.addEventListener("input", () => {
+          document.getElementById("submit").classList.remove("d-none");
+          document.getElementById("btn_editar").classList.add("d-none");
+        });
+      });
+    }
+  </script>
+</html>

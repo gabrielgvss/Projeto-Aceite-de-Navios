@@ -1,6 +1,6 @@
 import pandas as pd
 from flask import Flask, render_template, request
-from form import CadastroForm
+from form import CadastroForm, PerfilForm
 from flask_wtf.csrf import CSRFProtect
 import joblib
 import numpy as np
@@ -103,14 +103,70 @@ def login():
 @app.route("/relatorio")
 def relatorio_solicitacao():
     dados_tabela = [
-       {"posicao": 1, "nome": "ANavio 1", "situacao" : "EM PROCESSAMENTO", "data" : "02/11/2022"},
-       {"posicao": 2, "nome": "CNavio 2","situacao" : "APROVADO", "data" : "30/09/2022"},
-       {"posicao": 3, "nome": "DNavio 3","situacao" : "REPROVADO", "data" : "17/09/2022"},
-       {"posicao": 4, "nome": "BNavio 4","situacao" : "REPROVADO", "data" : "21/10/2022"},
-       {"posicao": 5, "nome": "ENavio 3","situacao" : "APROVADO", "data" : "13/11/2022"}
+       {"id_navio": 1, "nome": "ANavio 1", "situacao" : "REPROVADO", "data" : "02/11/2022"},
+       {"id_navio": 2, "nome": "CNavio 2","situacao" : "APROVADO", "data" : "30/09/2022"},
+       {"id_navio": 3, "nome": "DNavio 3","situacao" : "REPROVADO", "data" : "17/09/2022"},
+       {"id_navio": 4, "nome": "BNavio 4","situacao" : "REPROVADO", "data" : "21/10/2022"},
+       {"id_navio": 5, "nome": "ENavio 5","situacao" : "APROVADO", "data" : "13/11/2022"}
     ]
     return render_template("relatorio_solicitacao.html", dados_tabela = dados_tabela)
 
+@app.route("/perfil/<int:id_navio>", methods=['GET', 'POST'])
+def perfil(id_navio):
+
+    form = PerfilForm()
+
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            dados_formulario = {
+                'Nome do Navio': form.nome.data,
+                'LOA (metros)': form.loa.data,
+                'Boca (metros)': form.boca.data,
+                'DWT': form.dwt.data,
+                'Calado de Entrada (metros)': form.calado_entrada.data,
+                'Calado de Saída (metros)': form.calado_saida.data,
+                'Calado Aéreo (metros)': form.calado_aereo.data,
+                'Pontal (metros)': form.pontal.data,
+                'Tamanho da Lança (metros)': form.tamanho_lanca.data,
+                'Ano de Construção': form.ano_construcao.data,
+                'Tipo de Navio': form.tipo_navio.data
+            }
+
+    #fazer update dos dados do navio
+
+    #pegar dados do navio e fazer um get no banco
+    #dados fake
+    navio = {
+        'Nome do Navio': 'Navio20',
+        'LOA (metros)': 285,
+        'Boca (metros)': 48,
+        'DWT': 143643,
+        'Calado de Entrada (metros)': 17,
+        'Calado de Saída (metros)': 14,
+        'Calado Aéreo (metros)': 10,
+        'Pontal (metros)': 14,
+        'Tamanho da Lança (metros)': 16,
+        'Ano de Construção': 2000,
+        'Tipo de Navio': "BPL",
+        'situacao': "REPROVADO",
+        'motivacao': "Ano de construção"
+    }
+
+    form.nome.data = navio['Nome do Navio']
+    form.loa.data = navio['LOA (metros)']
+    form.boca.data = navio['Boca (metros)']
+    form.dwt.data = navio['DWT']
+    form.calado_entrada.data = navio['Calado de Entrada (metros)']
+    form.calado_saida.data = navio['Calado de Saída (metros)']
+    form.calado_aereo.data = navio['Calado Aéreo (metros)']
+    form.pontal.data = navio['Pontal (metros)']
+    form.tamanho_lanca.data = navio['Tamanho da Lança (metros)']
+    form.ano_construcao.data = navio['Ano de Construção']
+    form.tipo_navio.data = navio['Tipo de Navio']
+    form.situacao.data = navio['situacao']
+    form.motivacao.data = navio['motivacao']
+            
+    return render_template("perfil.html", form=form)
 
 if __name__ == "__main__":
     app.run(debug=True)

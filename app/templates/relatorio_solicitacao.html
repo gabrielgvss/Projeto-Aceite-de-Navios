@@ -66,8 +66,10 @@
         </ul>
       </nav>
     </div>
-    <div class="container shadow-lg rounded-3 py-2 px-4 w-50">
-      <div class="row">
+    <div
+      class="container shadow-lg rounded-3 py-2 px-4 justify-content-md-center w-50"
+    >
+      <div class="row justify-content-md-center">
         <div class="col-6">
           <div class="input-group w-100 mx-auto my-2">
             <input
@@ -97,7 +99,10 @@
           </select>
         </div>
       </div>
-      <table id="tabelaBody" class="table table-striped mx-auto">
+      <table
+        id="tabelaBody"
+        class="table table-striped mx-auto justify-content-md-center"
+      >
         <thead class="thead-dark">
           <tr>
             <th scope="col-1">#</th>
@@ -108,15 +113,17 @@
         </thead>
         <tbody>
           {% for item in dados_tabela %}
-          <tr>
-            <td class="col-1">{{ item["posicao"] }}</td>
+          <tr
+            id="{{ item['id_navio'] }}"
+            class="linha"
+            style="cursor: pointer; user-select: none"
+          >
+            <td class="col-1">{{ item["id_navio"] }}</td>
 
             {% if item["situacao"] == "APROVADO" %}
-            <td class="col-3 text-success">{{ item["situacao"] }}</td>
+            <td class="col-3 text-success bold">{{ item["situacao"] }}</td>
             {% endif %} {% if item["situacao"] == "REPROVADO" %}
-            <td class="col-3 text-danger">{{ item["situacao"] }}</td>
-            {% endif %} {% if item["situacao"] == "EM PROCESSAMENTO" %}
-            <td class="col-3 text-warning">{{ item["situacao"] }}</td>
+            <td class="col-3 text-danger bold">{{ item["situacao"] }}</td>
             {% endif %}
 
             <td class="col-4">{{ item["nome"] }}</td>
@@ -131,6 +138,19 @@
     </div>
     <script src="../static/js/site/script.js"></script>
     <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const linhas = document.getElementsByClassName("linha");
+        Array.from(linhas).forEach((linha) => {
+          linha.addEventListener("click", () => {
+            let trId = linha.getAttribute("id");
+            location.href = "/perfil/" + trId;
+          });
+        });
+      });
+
+      
+
+
       const nEncontrado = document.getElementById("nEncontrado");
 
       document
@@ -204,7 +224,6 @@
             linha.style.display = ""; // Exibir a linha se contiver o texto de pesquisa
             count++;
           } else {
-            count = 0;
             linha.style.display = "none"; // Ocultar a linha se não contiver o texto de pesquisa
           }
         });
