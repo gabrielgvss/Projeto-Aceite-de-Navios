@@ -138,6 +138,11 @@
     </div>
     <script src="../static/js/site/script.js"></script>
     <script>
+      function convertDataFormat(data) {
+        const partes = data.split("/");
+        return `${partes[2]}/${partes[1]}/${partes[0]}`;
+      }
+
       document.addEventListener("DOMContentLoaded", function () {
         const linhas = document.getElementsByClassName("linha");
         Array.from(linhas).forEach((linha) => {
@@ -147,9 +152,6 @@
           });
         });
       });
-
-      
-
 
       const nEncontrado = document.getElementById("nEncontrado");
 
@@ -175,8 +177,8 @@
                 valorB = b.cells[2].textContent;
                 break;
               case "opcao3":
-                valorA = a.cells[3].textContent; // Data da Solicitação
-                valorB = b.cells[3].textContent;
+                valorA = convertDataFormat(a.cells[3].textContent);
+                valorB = convertDataFormat(b.cells[3].textContent);
                 break;
               case "opcao4":
                 valorA = a.cells[0].textContent; // Posição
