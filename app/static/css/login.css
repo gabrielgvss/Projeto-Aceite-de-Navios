@@ -23,7 +23,7 @@ body {
     margin: auto;
 }
 
-img {
+.img-sem-sidebar {
     display: block;
     margin: 0 auto;
     border-radius: 8px;

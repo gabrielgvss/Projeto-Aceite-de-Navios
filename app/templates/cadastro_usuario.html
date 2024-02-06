@@ -10,11 +10,15 @@
     <title>LOGIN</title>
 </head>
 
-<body class="container justify-content-md-center pt-5">
-    <main class="w-100 m-auto form-container mt-2 p-4">
+<body class="container justify-content-md-center pt-3">
+    <main class="w-100 m-auto form-container">
         <form>
-            <img src="/static/img/logo_sana.png" class="" height="100" width="300" alt="Logo da SANA">
-            <h1 class="h1 m-3 fw-normal">CADASTRO</h1>
+            <img src="/static/img/logo_sana.png" class="img-sem-sidebar" height="100" width="300" alt="Logo da SANA">
+            <h1 class="h1 fw-normal">CADASTRO</h1>
+            <div class="form-floating py-1">
+                <input type="email" class="form-control mb-2" id="nomeInput" placeholder="Digite seu e-mail de acesso" autofocus/>
+                <label for="nomeInput">Nome do Usuário</label>
+            </div>
             <div class="form-floating py-1">
                 <input type="email" class="form-control mb-2" id="emailInput" placeholder="Digite seu e-mail de acesso" autofocus/>
                 <label for="emailInput">E-mail</label>
@@ -24,8 +28,8 @@
                 <label for="passwordInput">Senha</label>
             </div>
             <div class="form-floating py-1">
-                <input type="password" class="form-control" id="passwordInput" placeholder="Senha de acesso" />
-                <label for="passwordInput">Confirmação de Senha</label>
+                <input type="password" class="form-control" id="passwordInput1" placeholder="Senha de acesso" />
+                <label for="passwordInput1">Confirmação de Senha</label>
             </div>
             <button class="btn btn-primary w-100 py-2 my-2">Cadastrar</button>
             <p>Ja tem um cadastro? <a href="/login">faça seu login aqui</a></p>

@@ -193,6 +193,10 @@ def create_app():
     @app.route("/cadastro-user")
     def cadastro_user():
         return render_template("cadastro_usuario.html")
+    
+    @app.route("/perfil-user")
+    def perfil_user():
+        return render_template("perfil_usuario.html")
 
     return app
 
