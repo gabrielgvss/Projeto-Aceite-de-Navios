@@ -168,6 +168,17 @@ def create_app():
         form.motivacao.data = navio['motivacao']
                 
         return render_template("perfil.html", form=form)
+    
+    @app.route("/solicitar")
+    def solicitar():
+        dados_tabela = [
+            {"id_navio": 1, "nome": "ANavio 1", "situacao": "REPROVADO", "data": "02/11/2022"},
+            {"id_navio": 2, "nome": "CNavio 2", "situacao": "APROVADO", "data": "30/09/2022"},
+            {"id_navio": 3, "nome": "DNavio 3", "situacao": "REPROVADO", "data": "17/09/2022"},
+            {"id_navio": 4, "nome": "BNavio 4", "situacao": "REPROVADO", "data": "21/10/2022"},
+            {"id_navio": 5, "nome": "ENavio 5", "situacao": "APROVADO", "data": "13/11/2022"}
+        ]
+        return render_template("solicitar.html", dados_tabela=dados_tabela)
 
     return app
 
