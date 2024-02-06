@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="/static/css/relatorio.css" />
+    <link rel="stylesheet" href="/static/css/sidebar.css" />
+    <link rel="stylesheet" href="/static/css/header.css" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <title>Solicitar</title>
+  </head>
+  <body>
+    <div class="header" id="header">
+      <div class="logo">
+        <a href="/">
+          <img src="/static/img/logo_sana.png" alt="Logo SANA" id="img_logo" />
+        </a>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <!-- Left Sidebar -->
+      <div class="menutoggle active">
+        <div id="toggle-btn">
+          <img
+            src="../static/img/menu.svg"
+            alt=""
+            class="bx bx-menu"
+            id="header-toggle"
+            style="cursor: pointer"
+          />
+        </div>
+      </div>
+      <nav class="sidebar">
+        <div class="sidebar-header">
+          <h3 class="menu_header">MENU</h3>
+        </div>
+        <ul class="list">
+          <li>
+            <a href="#">
+              <img src="../static/img/key.svg" alt="" class="mx-3" /> Editar
+              Senha de Acesso
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img src="../static/img/ajuda.svg" alt="" class="mx-3" /> Ajuda
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img src="../static/img/suporte.png" alt="" class="mx-3" />
+              Suporte
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img src="../static/img/sair.svg" alt="" class="mx-3" /> Sair
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div
+      class="container shadow-lg rounded-3 py-2 px-4 justify-content-md-center w-50"
+    >
+      <div class="row justify-content-md-center">
+        <div class="col-6">
+          <div class="input-group w-100 mx-auto my-2">
+            <input
+              id="campoPesquisa"
+              type="text"
+              class="form-control"
+              placeholder="Pesquisar por nome"
+            />
+            <div class="input-group-prepend">
+              <button
+                id="btn-pesq"
+                class="btn btn-primary rounded-0 rounded-end"
+                onclick="pesquisar()"
+              >
+                Pesquisar
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 py-2">
+          <select id="ordenarPor" name="" class="form-select w-100">
+            <option value="" disabled selected>Ordenar por:</option>
+            <option value="opcao1">Ordem Alfabética de Nome</option>
+            <option value="opcao2">Posição</option>
+          </select>
+        </div>
+      </div>
+      <table
+        id="tabelaBody"
+        class="table table-striped mx-auto justify-content-md-center"
+      >
+        <thead class="thead-dark">
+          <tr>
+            <th>#</th>
+            <th>Nome do Navio</th>
+            <th>ação</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in dados_tabela %}
+          <tr
+            class="linha"
+            style="cursor: pointer; user-select: none"
+          >
+            <td class="col-2 py-3">{{ item["id_navio"] }}</td>
+            <td class="col-5 py-3">{{ item["nome"] }}</td>
+            <td class="col-5"><button class="btn btn-outline-primary aceite" id="{{ item['id_navio'] }}">solicitar aceite</button></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <p id="nEncontrado" style="display: none; font-weight: bold">
+        Navio não encontrado
+      </p>
+    </div>
+    <script src="../static/js/site/script.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const btns_aceite = document.getElementsByClassName("aceite");
+        Array.from(btns_aceite).forEach((btn) => {
+          btn.addEventListener("click", () => {
+            let btnId = btn.getAttribute("id");
+            //ação de solicitar aceite
+            //location.href = "/perfil/" + trId;
+            window.alert("função ainda não implementada")
+          });
+        });
+      });
+
+      const nEncontrado = document.getElementById("nEncontrado");
+
+      document
+        .getElementById("ordenarPor")
+        .addEventListener("change", function () {
+          const tabelaBody = document.getElementById("tabelaBody");
+          const opcaoSelecionada = this.value;
+
+          const linhas = Array.from(tabelaBody.rows);
+          linhas.shift(); // Remove a linha de cabeçalho
+
+          linhas.sort((a, b) => {
+            let valorA, valorB;
+
+            switch (opcaoSelecionada) {
+              case "opcao1":
+                valorA = a.cells[1].textContent; // Nome do Navio
+                valorB = b.cells[1].textContent;
+                break;
+              case "opcao2":
+                valorA = a.cells[0].textContent; // Posição
+                valorB = b.cells[0].textContent;
+                break;
+              default:
+                // Handle default case or do nothing
+                break;
+            }
+
+            return valorA.localeCompare(valorB);
+          });
+
+          tabelaBody.innerHTML = ""; // Limpar o corpo da tabela
+
+          // Adicionar a linha de cabeçalho de volta
+          const cabecalho = tabelaBody.createTHead();
+          cabecalho.innerHTML =
+            "<tr><th>#</th><th>Nome do Navio</th><th>ação</th></tr>";
+
+          const body = tabelaBody.createTBody();
+          // Adicionar as linhas ordenadas de volta
+          linhas.forEach((linha) => {
+            body.appendChild(linha);
+          });
+        });
+      function pesquisar() {
+        let count = 0;
+
+        const filtroPesquisa = document.getElementById("campoPesquisa");
+        const btnPesq = document.getElementById("btn-pesq");
+
+        btnPesq.textContent = "Pesquisar";
+        filtroPesquisa.placeholder = "Pesquisar por nome";
+
+        const tabelaBody = document.getElementById("tabelaBody");
+
+        const linhas = Array.from(tabelaBody.rows);
+        linhas.shift(); // Remove a linha de cabeçalho
+
+        linhas.forEach((linha) => {
+          const textoLinha = linha.innerText.toLowerCase();
+
+          if (textoLinha.includes(filtroPesquisa.value.toLowerCase())) {
+            linha.style.display = ""; // Exibir a linha se contiver o texto de pesquisa
+            count++;
+          } else {
+            linha.style.display = "none"; // Ocultar a linha se não contiver o texto de pesquisa
+          }
+        });
+
+        if (count === 0) {
+          nEncontrado.style.display = "";
+          filtroPesquisa.value = "";
+          filtroPesquisa.placeholder = "Limpar Pesquisa";
+          btnPesq.textContent = "Limpar";
+        } else {
+          nEncontrado.style.display = "none";
+        }
+      }
+    </script>
+  </body>
+</html>
