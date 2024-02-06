@@ -7,20 +7,21 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/static/css/index.css" />
+    <link rel="stylesheet" href="/static/css/style.css" />
     <link rel="stylesheet" href="/static/css/sidebar.css" />
     <link rel="stylesheet" href="/static/css/header.css" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <title>SUPORTE</title>
+    <title>AJUDA</title>
   </head>
 
   <body>
     <div class="header" id="header">
       <div class="logo">
-        <img src="/static/img/logo_sana.png" alt="Logo SANA" id="img_logo" />
+        <a href="/">
+          <img src="/static/img/logo_sana.png" alt="Logo SANA" id="img_logo" />
+        </a>
       </div>
     </div>
-
     <div class="container-fluid">
       <!-- Left Sidebar -->
       <div class="menutoggle active">
@@ -46,12 +47,12 @@
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="/ajuda">
               <img src="../static/img/ajuda.svg" alt="" class="mx-3" /> Ajuda
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="/suporte">
               <img src="../static/img/suporte.png" alt="" class="mx-3" />
               Suporte
             </a>
@@ -66,9 +67,17 @@
 
       <!-- Main Content -->
       <div class="main-content">
-
-        .
-
+        <div class="container justify-content-md-center h-100">
+          <div class="card m-auto w-50 h-50 rounded-4">
+            <div class="m-auto p-4 text-white fundo_azul w-100 rounded-top-4" style="font-weight: bold;">
+              <img src="../static/img/ajuda.svg" alt="" class="mb-1" />
+              AJUDA
+            </div>
+            <div class="p-5">
+              Lorem ipsum color sit amet consectetur adipisicing elit. Quis nemo earum quam, esse suscipit vero numquam? Nihil, dolorem, veniam error dolore amet nulla nisi quasi nemo vero sed excepturi porro.
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <script src="../static/js/site/script.js"></script>

@@ -10,6 +10,10 @@ body {
   overflow: hidden;
 }
 
+.fundo_azul{
+  background-color: #1648a8;
+}
+
 .menu_header {
   color: var(--color-white);
 }

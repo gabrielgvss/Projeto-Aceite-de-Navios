@@ -180,5 +180,15 @@ def create_app():
         ]
         return render_template("solicitar.html", dados_tabela=dados_tabela)
 
+
+    @app.route("/ajuda")
+    def ajuda():
+        return render_template("ajuda.html")
+    
+
+    @app.route("/suporte")
+    def suporte():
+        return render_template("suporte.html")
+
     return app
 
