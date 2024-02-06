@@ -12,7 +12,7 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <title>Relatório</title>
+    <title>Solicitar</title>
   </head>
   <body>
     <div class="header" id="header">
@@ -92,10 +92,8 @@
         <div class="col-6 py-2">
           <select id="ordenarPor" name="" class="form-select w-100">
             <option value="" disabled selected>Ordenar por:</option>
-            <option value="opcao1">Ordem Alfabética de Situação</option>
-            <option value="opcao2">Ordem Alfabética de Nome</option>
-            <option value="opcao3">Data de Solicitação</option>
-            <option value="opcao4">Posição</option>
+            <option value="opcao1">Ordem Alfabética de Nome</option>
+            <option value="opcao2">Posição</option>
           </select>
         </div>
       </div>
@@ -105,29 +103,20 @@
       >
         <thead class="thead-dark">
           <tr>
-            <th scope="col-1">#</th>
-            <th scope="col-3">Situação</th>
-            <th scope="col-4">Nome do Navio</th>
-            <th scope="col-3">Data da Solicitação</th>
+            <th>#</th>
+            <th>Nome do Navio</th>
+            <th>ação</th>
           </tr>
         </thead>
         <tbody>
           {% for item in dados_tabela %}
           <tr
-            id="{{ item['id_navio'] }}"
             class="linha"
             style="cursor: pointer; user-select: none"
           >
-            <td class="col-1">{{ item["id_navio"] }}</td>
-
-            {% if item["situacao"] == "APROVADO" %}
-            <td class="col-3 text-success bold">{{ item["situacao"] }}</td>
-            {% endif %} {% if item["situacao"] == "REPROVADO" %}
-            <td class="col-3 text-danger bold">{{ item["situacao"] }}</td>
-            {% endif %}
-
-            <td class="col-4">{{ item["nome"] }}</td>
-            <td class="col-3">{{ item["data"] }}</td>
+            <td class="col-2 py-3">{{ item["id_navio"] }}</td>
+            <td class="col-5 py-3">{{ item["nome"] }}</td>
+            <td class="col-5"><button class="btn btn-outline-primary aceite" id="{{ item['id_navio'] }}">solicitar aceite</button></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -138,16 +127,14 @@
     </div>
     <script src="../static/js/site/script.js"></script>
     <script>
-      function convertDataFormat(data) {
-        const partes = data.split("/");
-        return `${partes[2]}/${partes[1]}/${partes[0]}`;
-      } 
       document.addEventListener("DOMContentLoaded", function () {
-        const linhas = document.getElementsByClassName("linha");
-        Array.from(linhas).forEach((linha) => {
-          linha.addEventListener("click", () => {
-            let trId = linha.getAttribute("id");
-            location.href = "/perfil/" + trId;
+        const btns_aceite = document.getElementsByClassName("aceite");
+        Array.from(btns_aceite).forEach((btn) => {
+          btn.addEventListener("click", () => {
+            let btnId = btn.getAttribute("id");
+            //ação de solicitar aceite
+            //location.href = "/perfil/" + trId;
+            window.alert("função ainda não implementada")
           });
         });
       });
@@ -168,19 +155,10 @@
 
             switch (opcaoSelecionada) {
               case "opcao1":
-                valorA = a.cells[1].textContent; // Situação
+                valorA = a.cells[1].textContent; // Nome do Navio
                 valorB = b.cells[1].textContent;
                 break;
               case "opcao2":
-                valorA = a.cells[2].textContent; // Nome do Navio
-                valorB = b.cells[2].textContent;
-                break;
-              case "opcao3":
-                // Converter a data para um formato comparável (AAAA/MM/DD)
-                valorA = convertDataFormat(a.cells[3].textContent);
-                valorB = convertDataFormat(b.cells[3].textContent);
-                break;
-              case "opcao4":
                 valorA = a.cells[0].textContent; // Posição
                 valorB = b.cells[0].textContent;
                 break;
@@ -197,7 +175,7 @@
           // Adicionar a linha de cabeçalho de volta
           const cabecalho = tabelaBody.createTHead();
           cabecalho.innerHTML =
-            "<tr><th>#</th><th>Situação</th><th>Nome do Navio</th><th>Data da Solicitação</th></tr>";
+            "<tr><th>#</th><th>Nome do Navio</th><th>ação</th></tr>";
 
           const body = tabelaBody.createTBody();
           // Adicionar as linhas ordenadas de volta
