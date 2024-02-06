@@ -11,20 +11,24 @@
 </head>
 
 <body class="container justify-content-md-center pt-5">
-    <main class="w-100 m-auto form-container mt-5 p-4">
+    <main class="w-100 m-auto form-container mt-2 p-4">
         <form>
             <img src="/static/img/logo_sana.png" class="" height="100" width="300" alt="Logo da SANA">
-            <h1 class="h1 m-3 fw-normal">LOGIN</h1>
+            <h1 class="h1 m-3 fw-normal">CADASTRO</h1>
             <div class="form-floating py-1">
                 <input type="email" class="form-control mb-2" id="emailInput" placeholder="Digite seu e-mail de acesso" autofocus/>
                 <label for="emailInput">E-mail</label>
             </div>
             <div class="form-floating py-1">
-                <input type="password" class="form-control" id="passwordInput" placeholder="Senha de acesso" />
+                <input type="password" class="form-control mb-2" id="passwordInput" placeholder="Senha de acesso" />
                 <label for="passwordInput">Senha</label>
             </div>
-            <button class="btn btn-primary w-100 py-2 my-2">Entrar</button>
-            <p>Não tem um cadastro? <a href="/cadastro-user">faça-o aqui</a></p>
+            <div class="form-floating py-1">
+                <input type="password" class="form-control" id="passwordInput" placeholder="Senha de acesso" />
+                <label for="passwordInput">Confirmação de Senha</label>
+            </div>
+            <button class="btn btn-primary w-100 py-2 my-2">Cadastrar</button>
+            <p>Ja tem um cadastro? <a href="/login">faça seu login aqui</a></p>
         </form>
     </main>
 </body>

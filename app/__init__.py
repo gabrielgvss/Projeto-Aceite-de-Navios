@@ -189,6 +189,10 @@ def create_app():
     @app.route("/suporte")
     def suporte():
         return render_template("suporte.html")
+    
+    @app.route("/cadastro-user")
+    def cadastro_user():
+        return render_template("cadastro_usuario.html")
 
     return app
 
