@@ -1,6 +1,6 @@
 import pandas as pd
 from flask import Flask, render_template, request
-from form import CadastroForm, PerfilForm
+from app.form import CadastroForm, PerfilForm
 from flask_wtf.csrf import CSRFProtect
 import joblib
 import numpy as np
@@ -183,3 +183,5 @@ def create_app():
 
     if __name__ == "__main__":
         app.run(debug=True)
+
+    return app
