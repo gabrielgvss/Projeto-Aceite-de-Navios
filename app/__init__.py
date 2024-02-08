@@ -181,7 +181,24 @@ def create_app():
         ]
         return render_template("solicitar.html", dados_tabela = dados_tabela)
 
-    if __name__ == "__main__":
-        app.run(debug=True)
+
+    @app.route("/ajuda")
+    def ajuda():
+        return render_template("ajuda.html")
+    
+
+    @app.route("/suporte")
+    def suporte():
+        return render_template("suporte.html")
+    
+    @app.route("/cadastro-user")
+    def cadastro_user():
+        return render_template("cadastro_usuario.html")
+    
+    @app.route("/perfil-user")
+    def perfil_user():
+        return render_template("perfil_usuario.html")
+
+    return app
 
     return app
