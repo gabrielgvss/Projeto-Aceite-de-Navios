@@ -5,3 +5,4 @@ db = SQLAlchemy()
 # Importar os modelos aqui
 from .Navio import Navio
 from .User import User
+

@@ -5,11 +5,22 @@ from flask_wtf.csrf import CSRFProtect
 import joblib
 import numpy as np
 from lime.lime_tabular import LimeTabularExplainer
+from app.models.__pycache__.Navio import db
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 def create_app():
         
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'sua_chave_secreta_aqui'
+    # Inicialização do CSRFProtect
+    csrf = CSRFProtect(app)
+
+    app.config.from_pyfile('config.py')
+    # Configurações do banco de dados
+    
+    db.init_app(app)
+    
+    migrate = Migrate(app,db)
 
     csrf = CSRFProtect(app)
 
@@ -198,7 +209,5 @@ def create_app():
     @app.route("/perfil-user")
     def perfil_user():
         return render_template("perfil_usuario.html")
-
-    return app
 
     return app
