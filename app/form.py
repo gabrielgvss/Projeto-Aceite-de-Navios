@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, FloatField, IntegerField, SubmitField, SelectField
+from wtforms import StringField, FloatField, IntegerField, SubmitField, SelectField, PasswordField
+from wtforms.validators import DataRequired, Email, EqualTo
 
 class CadastroForm(FlaskForm):
     nome = StringField('Nome do Navio', render_kw={'class': 'form-control'})
@@ -16,9 +17,9 @@ class CadastroForm(FlaskForm):
     tipo_navio = SelectField('Tipo de Navio', choices=["GS", "CG", "GSM", "GLP", "CNTR", "GL", "GLP"], render_kw={'class': 'form-control'})
     ultimo_porto = StringField('Último Porto', render_kw={'class': 'form-control'})
     proximo_porto = StringField('Próximo Porto', render_kw={'class': 'form-control'})
-    arquivo_csv = FileField('Upload do arquivo CSV', validators=[
-        FileAllowed(['csv'], 'Apenas arquivos CSV são permitidos.')
-        ], render_kw={'class': 'form-control'})
+    # arquivo_csv = FileField('Upload do arquivo CSV', validators=[
+    #     FileAllowed(['csv'], 'Apenas arquivos CSV são permitidos.')
+    #     ], render_kw={'class': 'form-control'})
 
     submit = SubmitField('Enviar', render_kw={'class': 'btn btn-dark w-25 btn-submit'})
 
@@ -42,3 +43,16 @@ class PerfilForm(FlaskForm):
 
 
     submit = SubmitField('Enviar', render_kw={'class': 'btn btn-dark w-25 btn-submit'})
+    
+class UserPerfil(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Sign Up')
+    
+class LoginForm(FlaskForm):
+    # Campos para o formulário de login
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Login')

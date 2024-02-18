@@ -3,7 +3,7 @@ from . import db
 
 class Navio(db.Model):
     __tablename__ = 'Navios'
-    id = db.Column(db.Integer, primary_key=True)
+    id_navio = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(255), unique=True, nullable=False)
     loa = db.Column(db.Float, nullable=False)
     boca = db.Column(db.Float, nullable=False)
@@ -23,7 +23,7 @@ class Navio(db.Model):
 
     def serialize(self):
         return {
-            'id': self.id,
+            'id_navio': self.id_navio,
             'name': self.nome,
             'loa': self.loa,
             'boca': self.boca,

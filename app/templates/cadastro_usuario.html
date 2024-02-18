@@ -12,27 +12,25 @@
 
 <body class="container justify-content-md-center pt-3">
     <main class="w-100 m-auto form-container">
-        <form>
+        <form action="/cadastro-user" method="POST">
+            {{ form.hidden_tag() }}
+            {{ form.csrf_token }}
             <img src="/static/img/logo_sana.png" class="img-sem-sidebar" height="100" width="300" alt="Logo da SANA">
             <h1 class="h1 fw-normal">CADASTRO</h1>
             <div class="form-floating py-1">
-                <input type="email" class="form-control mb-2" id="nomeInput" placeholder="Digite seu e-mail de acesso" autofocus/>
-                <label for="nomeInput">Nome do Usuário</label>
+                {{ form.username.label }} {{ form.username(class="form-control mb-2", id="nomeInput", placeholder="Digite seu e-mail de acesso", autofocus=True) }}
             </div>
             <div class="form-floating py-1">
-                <input type="email" class="form-control mb-2" id="emailInput" placeholder="Digite seu e-mail de acesso" autofocus/>
-                <label for="emailInput">E-mail</label>
+                {{ form.email.label }} {{ form.email(class="form-control mb-2", id="emailInput", placeholder="Digite seu e-mail de acesso", autofocus=True) }}
             </div>
             <div class="form-floating py-1">
-                <input type="password" class="form-control mb-2" id="passwordInput" placeholder="Senha de acesso" />
-                <label for="passwordInput">Senha</label>
+                {{ form.password.label }} {{ form.password(class="form-control mb-2", id="passwordInput", placeholder="Senha de acesso") }}
             </div>
             <div class="form-floating py-1">
-                <input type="password" class="form-control" id="passwordInput1" placeholder="Senha de acesso" />
-                <label for="passwordInput1">Confirmação de Senha</label>
+                {{ form.confirm_password.label }} {{ form.confirm_password(class="form-control", id="passwordInput1", placeholder="Confirmação de Senha") }}
             </div>
             <button class="btn btn-primary w-100 py-2 my-2">Cadastrar</button>
-            <p>Ja tem um cadastro? <a href="/login">faça seu login aqui</a></p>
+            <p>Já tem um cadastro? <a href="/login">Faça seu login aqui</a></p>
         </form>
     </main>
 </body>

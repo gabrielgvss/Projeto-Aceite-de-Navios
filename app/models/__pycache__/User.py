@@ -1,42 +1,29 @@
 from . import db
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'Users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), unique=True, nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
-    password = db.Column(db.String(255), nullable=False)
+    password_hash = db.Column(db.String(255), nullable=False)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
     def serialize(self):
         return {
             'id': self.id,
             'username': self.username,
             'email': self.email,
-            'password': self.password
+            'password_hash': self.password_hash
         }
 
-# def criar_usuario(username, email, password):
-#     novo_usuario = User(
-#         username=username,
-#         email=email,
-#         password=password
-#     )
-#     db.session.add(novo_usuario)
-#     db.session.commit()
 
-# def consultar_usuarios():
-#     return User.query.all()
-
-# # Função para atualizar um usuário
-# def atualizar_usuario(id, novo_email):
-#     usuario = User.query.get(id)
-#     if usuario:
-#         usuario.email = novo_email
-#         db.session.commit()
-
-# # Função para excluir um usuário
-# def excluir_usuario(id):
-#     usuario = User.query.get(id)
-#     if usuario:
-#         db.session.delete(usuario)
-#         db.session.commit()
+class UserM(UserMixin):
+    def __init__(self, id):
+        self.id = id
