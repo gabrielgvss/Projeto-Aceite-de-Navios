@@ -1,5 +1,6 @@
 from flask import jsonify
 from . import db
+from datetime import datetime
 
 class Navio(db.Model):
     __tablename__ = 'Navios'
@@ -16,6 +17,9 @@ class Navio(db.Model):
     ano_construcao = db.Column(db.Integer, nullable=False)
     tipo_navio = db.Column(db.String(50), nullable=False)
     situacao = db.Column(db.String(50), nullable=False)
+    data_cadastro = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+
     
     # Relação com a tabela de Usuários
     user_id = db.Column(db.Integer, db.ForeignKey('Users.id', name='fk_user_id'), nullable=False)
@@ -36,7 +40,8 @@ class Navio(db.Model):
             'ano_construcao': self.ano_construcao,
             'tipo_navio': self.tipo_navio,
             'situacao': self.situacao,
-            'user_id': self.user_id
+            'user_id': self.user_id,
+            'data_cadastro': self.data_cadastro
         }
 
 

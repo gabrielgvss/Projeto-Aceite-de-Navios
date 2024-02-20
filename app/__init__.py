@@ -13,6 +13,7 @@ from flask_migrate import Migrate
 from controllers.UserController import index, criar_usuario # Importe a função cadastro_user do UserController
 from controllers.NavioController import cadastrar_navio
 from flask_login import LoginManager, login_user
+from datetime import datetime
 
 
 login_manager = LoginManager()
@@ -89,11 +90,12 @@ def create_app():
 
             # Adicione a situação do navio ao dicionário com base no resultado da predição
             if resultado_predicao == 1:
-                dados_formulario['Situacao'] = 'APROVADO'
-            else:
                 dados_formulario['Situacao'] = 'REPROVADO'
+            else:
+                dados_formulario['Situacao'] = 'APROVADO'
             
             # Chame a função cadastrar_navio apenas uma vez, dentro do escopo do bloco condicional
+            
             cadastrar_navio(dados_formulario)
 
             if resultado_predicao == 1:
@@ -108,13 +110,18 @@ def create_app():
 
     @app.route("/relatorio")
     def relatorio_solicitacao():
-        dados_tabela = [
-        {"id_navio": 1, "nome": "ANavio 1", "situacao" : "REPROVADO", "data" : "02/11/2022"},
-        {"id_navio": 2, "nome": "CNavio 2","situacao" : "APROVADO", "data" : "30/09/2022"},
-        {"id_navio": 3, "nome": "DNavio 3","situacao" : "REPROVADO", "data" : "17/09/2022"},
-        {"id_navio": 4, "nome": "BNavio 4","situacao" : "REPROVADO", "data" : "21/10/2022"},
-        {"id_navio": 5, "nome": "ENavio 5","situacao" : "APROVADO", "data" : "13/11/2022"}
-        ]
+        navios = Navio.query.all()
+        
+        dados_tabela = []
+       
+        for navio in navios:
+            dados_navios = {
+                "id_navio": navio.id_navio,
+                "nome": navio.nome,
+                "situacao": navio.situacao,
+                "data": navio.data_cadastro.strftime("%d/%m/%Y")
+            }
+            dados_tabela.append(dados_navios)
         return render_template("relatorio_solicitacao.html", dados_tabela = dados_tabela)
 
     @app.route("/perfil/<int:id_navio>", methods=['GET', 'POST'])
@@ -142,35 +149,39 @@ def create_app():
 
         #pegar dados do navio e fazer um get no banco
         #dados fake
-        navio = {
-            'Nome do Navio': 'Navio20',
-            'LOA (metros)': 285,
-            'Boca (metros)': 48,
-            'DWT': 143643,
-            'Calado de Entrada (metros)': 17,
-            'Calado de Saída (metros)': 14,
-            'Calado Aéreo (metros)': 10,
-            'Pontal (metros)': 14,
-            'Tamanho da Lança (metros)': 16,
-            'Ano de Construção': 2000,
-            'Tipo de Navio': "BPL",
-            'situacao': "REPROVADO",
-            'motivacao': "Ano de construção"
-        }
+        
+        navio = Navio.query.get(id_navio)
 
-        form.nome.data = navio['Nome do Navio']
-        form.loa.data = navio['LOA (metros)']
-        form.boca.data = navio['Boca (metros)']
-        form.dwt.data = navio['DWT']
-        form.calado_entrada.data = navio['Calado de Entrada (metros)']
-        form.calado_saida.data = navio['Calado de Saída (metros)']
-        form.calado_aereo.data = navio['Calado Aéreo (metros)']
-        form.pontal.data = navio['Pontal (metros)']
-        form.tamanho_lanca.data = navio['Tamanho da Lança (metros)']
-        form.ano_construcao.data = navio['Ano de Construção']
-        form.tipo_navio.data = navio['Tipo de Navio']
-        form.situacao.data = navio['situacao']
-        form.motivacao.data = navio['motivacao']
+        if navio:
+            form.nome.data = navio.nome
+            form.loa.data = navio.loa
+            form.boca.data = navio.boca
+            form.dwt.data = navio.dwt
+            form.calado_entrada.data = navio.calado_entrada
+            form.calado_saida.data = navio.calado_saida
+            form.calado_aereo.data = navio.calado_aereo
+            form.pontal.data = navio.pontal
+            form.tamanho_lanca.data = navio.tamanho_lanca
+            form.ano_construcao.data = navio.ano_construcao
+            form.tipo_navio.data = navio.tipo_navio
+            form.situacao.data = navio.situacao
+        # form.motivacao.data = navio.motivacao
+
+         #   form.motivacao.data = navio.motivacao
+
+            # form.nome.data = navio['Nome do Navio']
+            # form.loa.data = navio['LOA (metros)']
+            # form.boca.data = navio['Boca (metros)']
+            # form.dwt.data = navio['DWT']
+            # form.calado_entrada.data = navio['Calado de Entrada (metros)']
+            # form.calado_saida.data = navio['Calado de Saída (metros)']
+            # form.calado_aereo.data = navio['Calado Aéreo (metros)']
+            # form.pontal.data = navio['Pontal (metros)']
+            # form.tamanho_lanca.data = navio['Tamanho da Lança (metros)']
+            # form.ano_construcao.data = navio['Ano de Construção']
+            # form.tipo_navio.data = navio['Tipo de Navio']
+            # form.situacao.data = navio['situacao']
+            # form.motivacao.data = navio['motivacao']
                 
         return render_template("perfil.html", form=form)
 
