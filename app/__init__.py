@@ -1,6 +1,7 @@
 import os
 import pandas as pd
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, session
+from werkzeug.security import generate_password_hash
 from app.form import CadastroForm, PerfilForm, UserPerfil, LoginForm
 from flask_wtf.csrf import CSRFProtect
 import joblib
@@ -12,7 +13,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from controllers.UserController import index, criar_usuario # Importe a função cadastro_user do UserController
 from controllers.NavioController import cadastrar_navio
-from flask_login import LoginManager, login_user
+from flask_login import LoginManager, login_user, current_user
 from datetime import datetime
 
 
@@ -63,9 +64,15 @@ def create_app():
             if campo in form._fields:
                 form._fields[campo].data = valor
 
+
     @app.route("/")
     def homepage():
-        return render_template("index.html")
+        if current_user.is_authenticated:
+            return render_template('index.html')  # Página principal quando logado
+        else:
+            return redirect(url_for('login'))  # Redireciona para a página de login
+
+      
 
     @app.route("/cadastro-navio", methods=['GET', 'POST'])
     def cadastro_navio():
@@ -186,20 +193,34 @@ def create_app():
     @app.route("/suporte")
     def suporte():
         return render_template("suporte.html")
-    
-
+        
     @app.route("/cadastro-user", methods=['GET', 'POST'])
     def cadastro_user():
-        form = UserPerfil()  # Definir o formulário antes de ser usado
-
+        form = UserPerfil()
         if request.method == 'POST':
-            # Obter os dados enviados pelo formulário
             username = request.form['username']
             email = request.form['email']
             password = request.form['password']
             confirm_password = request.form['confirm_password']
-            if password == confirm_password:
-                criar_usuario(username, email, password)
+
+            # Verificar se o nome de usuário já está em uso
+            existing_user = User.query.filter_by(username=username).first()
+            if existing_user:
+                return "Nome de usuário já está em uso. Por favor, escolha outro."
+
+            # Criptografar a senha antes de armazená-la no banco de dados
+            hashed_password = generate_password_hash(password)
+
+            # Criar um novo usuário
+            new_user = User(username=username, email=email)
+            new_user.set_password(password)
+
+
+            # Adicionar o novo usuário ao banco de dados
+            db.session.add(new_user)
+            db.session.commit()
+
+            return redirect(url_for('login'))  # Redirecionar para a página de login após o cadastro bem-sucedido
 
         return render_template("cadastro_usuario.html", form=form)
     
@@ -212,20 +233,22 @@ def create_app():
         return User.query.get(int(user_id))
     
     
-    import logging
 
     # Configurando o logger    
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-
     @app.route("/login", methods=["GET", "POST"])
     def login():
+        if 'logged_in' in session:
+            return redirect(url_for('homepage'))  # Redireciona para a página principal se o usuário já estiver logado
+
         form = LoginForm()
         
         if request.method == "POST":
-            print("entrou no metodo")
+            print("Entrou no método POST do login")  # Adicionando mensagem de depuração
+            
             # Obter os dados do formulário
             email = request.form["email"]
             password = request.form["password"]
@@ -243,6 +266,9 @@ def create_app():
                     # Faça login no usuário
                     login_user(user)
                     
+                    # Adicionando mensagem de depuração antes do redirecionamento
+                    print("Redirecionando para a página principal após o login bem-sucedido")
+                    
                     # Redirecione para a página após o login bem-sucedido
                     return redirect(url_for("homepage"))
                 else:
@@ -252,6 +278,8 @@ def create_app():
         
         # Renderize o template de login novamente se as credenciais forem inválidas
         return render_template('login.html', form=form)
+    
+
 
 
 

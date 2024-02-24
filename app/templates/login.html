@@ -13,7 +13,9 @@
 <body class="container justify-content-md-center pt-5">
     <main class="w-100 m-auto form-container mt-5 p-4">
         <form method="POST" action="/login">
-            {{ form.hidden_tag() }} {{ form.csrf_token }}
+            {{ form.hidden_tag() }}
+            <!-- Adicione IDs únicos para os elementos csrf_token -->
+            {{ form.csrf_token(id="csrf_token_login") }}
             <img src="/static/img/logo_sana.png" class="img-sem-sidebar" height="100" width="300" alt="Logo da SANA">
             <h1 class="h1 m-3 fw-normal">LOGIN</h1>
             <div class="form-floating py-1">
