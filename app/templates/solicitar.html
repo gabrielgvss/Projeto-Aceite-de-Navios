@@ -109,14 +109,16 @@
           </tr>
         </thead>
         <tbody>
-          {% for item in dados_tabela %}
-          <tr
-            class="linha"
-            style="cursor: pointer; user-select: none"
-          >
-            <td class="col-2 py-3">{{ item["id_navio"] }}</td>
-            <td class="col-5 py-3">{{ item["nome"] }}</td>
-            <td class="col-5"><button class="btn btn-outline-primary aceite" id="{{ item['id_navio'] }}">solicitar aceite</button></td>
+          {% for navio in dados_tabela %}
+          <tr class="linha" style="cursor: pointer; user-select: none">
+            <td class="col-2 py-3">{{ navio.id_navio }}</td>
+            <td class="col-5 py-3">{{ navio.nome }}</td>
+            <td class="col-5">
+              <button class="btn btn-outline-primary aceite" onclick="mostrarMensagem('{{ navio.nome }}', '{{ navio.situacao }}')">Solicitar Aceite</button>
+
+
+
+            </td>
           </tr>
           {% endfor %}
         </tbody>
@@ -127,96 +129,20 @@
     </div>
     <script src="../static/js/site/script.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const btns_aceite = document.getElementsByClassName("aceite");
-        Array.from(btns_aceite).forEach((btn) => {
-          btn.addEventListener("click", () => {
-            let btnId = btn.getAttribute("id");
-            //ação de solicitar aceite
-            //location.href = "/perfil/" + trId;
-            window.alert("função ainda não implementada")
-          });
-        });
-      });
-
-      const nEncontrado = document.getElementById("nEncontrado");
-
-      document
-        .getElementById("ordenarPor")
-        .addEventListener("change", function () {
-          const tabelaBody = document.getElementById("tabelaBody");
-          const opcaoSelecionada = this.value;
-
-          const linhas = Array.from(tabelaBody.rows);
-          linhas.shift(); // Remove a linha de cabeçalho
-
-          linhas.sort((a, b) => {
-            let valorA, valorB;
-
-            switch (opcaoSelecionada) {
-              case "opcao1":
-                valorA = a.cells[1].textContent; // Nome do Navio
-                valorB = b.cells[1].textContent;
-                break;
-              case "opcao2":
-                valorA = a.cells[0].textContent; // Posição
-                valorB = b.cells[0].textContent;
-                break;
-              default:
-                // Handle default case or do nothing
-                break;
-            }
-
-            return valorA.localeCompare(valorB);
-          });
-
-          tabelaBody.innerHTML = ""; // Limpar o corpo da tabela
-
-          // Adicionar a linha de cabeçalho de volta
-          const cabecalho = tabelaBody.createTHead();
-          cabecalho.innerHTML =
-            "<tr><th>#</th><th>Nome do Navio</th><th>ação</th></tr>";
-
-          const body = tabelaBody.createTBody();
-          // Adicionar as linhas ordenadas de volta
-          linhas.forEach((linha) => {
-            body.appendChild(linha);
-          });
-        });
-      function pesquisar() {
-        let count = 0;
-
-        const filtroPesquisa = document.getElementById("campoPesquisa");
-        const btnPesq = document.getElementById("btn-pesq");
-
-        btnPesq.textContent = "Pesquisar";
-        filtroPesquisa.placeholder = "Pesquisar por nome";
-
-        const tabelaBody = document.getElementById("tabelaBody");
-
-        const linhas = Array.from(tabelaBody.rows);
-        linhas.shift(); // Remove a linha de cabeçalho
-
-        linhas.forEach((linha) => {
-          const textoLinha = linha.innerText.toLowerCase();
-
-          if (textoLinha.includes(filtroPesquisa.value.toLowerCase())) {
-            linha.style.display = ""; // Exibir a linha se contiver o texto de pesquisa
-            count++;
-          } else {
-            linha.style.display = "none"; // Ocultar a linha se não contiver o texto de pesquisa
-          }
-        });
-
-        if (count === 0) {
-          nEncontrado.style.display = "";
-          filtroPesquisa.value = "";
-          filtroPesquisa.placeholder = "Limpar Pesquisa";
-          btnPesq.textContent = "Limpar";
+      function mostrarMensagem(nomeNavio, situacaoNavio) {
+        var mensagem = `Solicitação de aceite para o navio ${nomeNavio} `;
+        if (situacaoNavio === 'REPROVADO') {
+            mensagem += 'foi recusada!';
+        } else if (situacaoNavio === 'APROVADO') {
+            mensagem += 'foi aprovada!';
         } else {
-          nEncontrado.style.display = "none";
+            mensagem += 'tem uma situação desconhecida.';
         }
-      }
-    </script>
+        alert(mensagem);
+    }
+    
+    
+  </script>      
+      
   </body>
 </html>

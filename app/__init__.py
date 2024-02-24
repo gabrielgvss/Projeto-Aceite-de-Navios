@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from app.form import CadastroForm, PerfilForm, UserPerfil, LoginForm
 from flask_wtf.csrf import CSRFProtect
 import joblib
@@ -142,11 +142,9 @@ def create_app():
 
 
 
-    @app.route("/solicitar")
+    @app.route("/solicitar", methods=['GET', 'POST'])
     def solicitar():
-        
         navios = Navio.query.all()
-    
         dados_tabela = []
         for navio in navios:
             dados_navio = {
@@ -156,7 +154,28 @@ def create_app():
                 "data": navio.data_cadastro.strftime("%d/%m/%Y")
             }
             dados_tabela.append(dados_navio)
-        return render_template("solicitar.html", dados_tabela = dados_tabela)
+
+        if request.method == 'POST':
+            dados_navio = request.json
+            navio_id = dados_navio['id_navio']
+            
+            # Encontrar o navio pelo ID
+            navio = Navio.query.get(navio_id)
+            if navio:
+                situacao = navio.situacao
+                if situacao == 'REPROVADO':
+                    mensagem = "Solicitação recusada!"
+                elif situacao == 'APROVADO':
+                    mensagem = "Solicitação aprovada!"
+                else:
+                    mensagem = "Situação do navio desconhecida."
+            else:
+                mensagem = "Navio não encontrado."
+
+            return jsonify({'mensagem': mensagem})
+
+        return render_template("solicitar.html", dados_tabela=dados_tabela)
+
 
 
     @app.route("/ajuda")
