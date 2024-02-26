@@ -122,8 +122,10 @@
 
             {% if item["situacao"] == "APROVADO" %}
             <td class="col-3 text-success bold">{{ item["situacao"] }}</td>
-            {% endif %} {% if item["situacao"] == "REPROVADO" %}
+            {% elif item["situacao"] == "REPROVADO" %}
             <td class="col-3 text-danger bold">{{ item["situacao"] }}</td>
+            {% elif item["situacao"] == "EM ANÁLISE" %}
+            <td class="col-3 text-gray bold">{{ item["situacao"] }}</td>
             {% endif %}
 
             <td class="col-4">{{ item["nome"] }}</td>

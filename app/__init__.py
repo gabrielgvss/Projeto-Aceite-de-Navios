@@ -1,4 +1,5 @@
 import os
+import time
 import pandas as pd
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 from werkzeug.security import generate_password_hash
@@ -15,12 +16,17 @@ from controllers.UserController import index, criar_usuario # Importe a função
 from controllers.NavioController import cadastrar_navio
 from flask_login import LoginManager, login_user, current_user
 from datetime import datetime
-
+import logging
+from logging.handlers import RotatingFileHandler
 
 login_manager = LoginManager()
 
 def create_app():
     app = Flask(__name__)
+    handler = RotatingFileHandler('app.log', maxBytes=10000, backupCount=1)  # Arquivo de log rotativo
+    handler.setLevel(logging.DEBUG)  # Define o nível de log para DEBUG
+
+    app.logger.addHandler(handler)
     
     app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
 
@@ -93,22 +99,12 @@ def create_app():
                 'Tipo de Navio': form.tipo_navio.data
             }
 
-            resultado_predicao = realizar_predicao(dados_formulario)
-
-            # Adicione a situação do navio ao dicionário com base no resultado da predição
-            if resultado_predicao == 1:
-                dados_formulario['Situacao'] = 'REPROVADO'
-            else:
-                dados_formulario['Situacao'] = 'APROVADO'
+            dados_formulario['Situacao'] = 'EM ANÁLISE'
             
             # Chame a função cadastrar_navio apenas uma vez, dentro do escopo do bloco condicional
             
             cadastrar_navio(dados_formulario)
-
-            if resultado_predicao == 1:
-                return render_template("recusado.html", dados=dados_formulario)
-            else:
-                return render_template("cadastro_sucesso.html", dados=dados_formulario)
+            time.sleep(4)
 
         # Renderize o formulário caso o método não seja POST ou a validação do formulário falhe
         return render_template("cadastro-navio.html", form=form)
@@ -146,42 +142,91 @@ def create_app():
                 return redirect(url_for('perfil', id_navio=id_navio))
 
         return render_template("perfil.html", form=form, id_navio=id_navio)
-
-
-
-    @app.route("/solicitar", methods=['GET', 'POST'])
-    def solicitar():
+    
+    
+    @app.route("/visualizar", methods=['GET'])
+    def visualizar():
         navios = Navio.query.all()
+        
         dados_tabela = []
+       
         for navio in navios:
-            dados_navio = {
+            dados_navios = {
                 "id_navio": navio.id_navio,
                 "nome": navio.nome,
                 "situacao": navio.situacao,
                 "data": navio.data_cadastro.strftime("%d/%m/%Y")
             }
-            dados_tabela.append(dados_navio)
+            dados_tabela.append(dados_navios)
+        return render_template("relatorio_solicitacao.html", dados_tabela = dados_tabela)
+    
+    @app.route("/editar/<int:id_navio>", methods=['GET', 'POST'])
+    def editar(id_navio):
+        navio = Navio.query.get_or_404(id_navio)
+        form = PerfilForm(obj=navio)
 
         if request.method == 'POST':
-            dados_navio = request.json
-            navio_id = dados_navio['id_navio']
-            
-            # Encontrar o navio pelo ID
-            navio = Navio.query.get(navio_id)
+            if form.validate_on_submit():
+                form.populate_obj(navio)
+                db.session.commit()
+                return redirect(url_for('visualizar', id_navio=id_navio))
+
+        return render_template("editar.html", form=form, id_navio=id_navio)
+    
+        
+    @app.route("/solicitar", methods=['GET'])
+    def exibir_solicitar():
+        navios = Navio.query.all()  # Recupera todos os navios do banco de dados
+        return render_template("solicitar.html", navios=navios)
+
+    @app.route("/solicitar/<int:id_navio>", methods=['GET'])
+    def exibir_pagina_solicitar(id_navio):
+        if request.method == 'GET':
+            navios = Navio.query.filter_by(id_navio=id_navio).first()  # Alterado aqui
+            return render_template("solicitar.html", navios=navios,id_navio=id_navio ) 
+       
+
+    @app.route("/processar_solicitacao/<int:id_navio>", methods=['POST','PUT'])
+    def processar_solicitacao(id_navio):
+        if request.method == 'POST' or request.method == 'PUT':
+            print("Recebendo solicitação para processar o navio ID:", id_navio)
+            navio = Navio.query.get_or_404(id_navio)
+            mensagem = None
+
             if navio:
-                situacao = navio.situacao
-                if situacao == 'REPROVADO':
+                # Realizar a predição
+                dados_para_predicao = {
+                    'LOA (metros)': navio.loa,
+                    'Boca (metros)': navio.boca,
+                    'DWT': navio.dwt,
+                    'Calado de Entrada (metros)': navio.calado_entrada,
+                    'Calado de Saída (metros)': navio.calado_saida,
+                    'Ano de Construção': navio.ano_construcao
+                }
+                resultado_predicao = realizar_predicao(dados_para_predicao)
+
+                # Editar a situação do navio com base no resultado da predição
+                if resultado_predicao == 1:
+                    navio.situacao = 'REPROVADO'
+                elif resultado_predicao == 0:
+                    navio.situacao = 'APROVADO'
+                else:
+                    navio.situacao = 'EM ANÁLISE'
+
+                # Salvar alterações no banco de dados
+                db.session.commit()
+
+                # Preparar mensagem com base na nova situação do navio
+                situacao_atualizada = navio.situacao
+                if situacao_atualizada == 'REPROVADO':
                     mensagem = "Solicitação recusada!"
-                elif situacao == 'APROVADO':
+                elif situacao_atualizada == 'APROVADO':
                     mensagem = "Solicitação aprovada!"
                 else:
                     mensagem = "Situação do navio desconhecida."
-            else:
-                mensagem = "Navio não encontrado."
-
-            return jsonify({'mensagem': mensagem})
-
-        return render_template("solicitar.html", dados_tabela=dados_tabela)
+            
+        print("Mensagem de resposta:", mensagem)
+        return render_template("resultado_solicitacao.html", mensagem=mensagem)
 
 
 
