@@ -1,5 +1,6 @@
 import os
 import time
+import re
 import pandas as pd
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 from werkzeug.security import generate_password_hash
@@ -62,8 +63,35 @@ def create_app():
             dados['Ano de Construção']
         ]).reshape(1, -1)
 
+        # Obtenha o resultado da previsão
         resultado_predicao = modelo_treinado.predict(dados_predicao)
-        return resultado_predicao[0]
+
+        # Verifique se o resultado da previsão é igual a 0 (Recusado)
+        if resultado_predicao[0] == 0:
+            # Crie um explicador LIME apenas se a previsão for Recusada
+            colunas_features = ['LOA (metros)', 'Boca (metros)', 'DWT', 'Calado de Entrada (metros)', 'Calado de Saída (metros)', 'Ano de Construção']
+            explicador = LimeTabularExplainer(np.zeros(len(colunas_features)), feature_names=colunas_features, class_names=['Aceito', 'Recusado'], discretize_continuous=False)
+            
+            # Se a previsão for Recusada, obtenha as features recusadas
+            if resultado_predicao[0] == 0:
+                exp = explicador.explain_instance(dados_predicao.flatten(), modelo_treinado.predict_proba, num_features=len(colunas_features))
+
+                explicacao_lista = exp.as_list()
+                features_importantes = []
+                
+                for explicacao, probabilidade in explicacao_lista:
+                    if (probabilidade > 0):
+                        features_importantes.append(explicacao)
+                        
+                features_importantes = [re.sub(r'[^a-zA-Z\s]', '', nome) for nome in features_importantes]
+                features_importantes = [feature.strip() for feature in features_importantes]
+
+            return resultado_predicao[0], features_importantes 
+
+        else:
+            # Se a previsão não for Recusada, retorne apenas o resultado da previsão
+            return resultado_predicao[0]
+
 
     def preencher_formulario_com_dados(form, dados):
         for campo, valor in dados.items():
